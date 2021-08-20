@@ -1,5 +1,6 @@
 package chapter01
 
-interface Scoreable {
+@FunctionalInterface
+fun interface Scoreable {
     fun getScore(): Int
 }

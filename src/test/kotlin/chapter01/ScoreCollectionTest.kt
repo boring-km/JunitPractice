@@ -10,16 +10,8 @@ class ScoreCollectionTest {
     fun answerArithmeticMeanOfTwoNumbers() {
         // 준비 (given)
         val collection = ScoreCollection()
-        collection.add(object : Scoreable {
-            override fun getScore(): Int {
-                return 5
-            }
-        })
-        collection.add(object : Scoreable {
-            override fun getScore(): Int {
-                return 7
-            }
-        })
+        collection.add { 5 }
+        collection.add { 7 }
 
         // 실행 (when)
         val actualResult = collection.arithmeticMean()
