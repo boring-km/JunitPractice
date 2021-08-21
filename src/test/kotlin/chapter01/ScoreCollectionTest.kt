@@ -8,15 +8,15 @@ class ScoreCollectionTest {
 
     @Test
     fun answerArithmeticMeanOfTwoNumbers() {
-        // 준비 (given)
+        // 준비 (arange, given)
         val collection = ScoreCollection()
         collection.add { 5 }
         collection.add { 7 }
 
-        // 실행 (when)
+        // 실행 (act, when)
         val actualResult = collection.arithmeticMean()
 
-        // 단언 (then)
+        // 단언 (assert, then)
         assertThat(actualResult, equalTo(6))
     }
 }
