@@ -15,3 +15,10 @@ abstract class Question(private val id: Int, val text: String, private val answe
         return -1
     }
 }
+
+class BooleanQuestion(id: Int, text: String?) :
+    Question(id, text!!, arrayOf("No", "Yes")) {
+    override fun match(expected: Int, actual: Int): Boolean {
+        return expected == actual
+    }
+}

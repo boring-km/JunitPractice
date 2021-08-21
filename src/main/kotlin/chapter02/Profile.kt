@@ -14,14 +14,14 @@ class Profile(_name: String) {
         answers[answer.questionText] = answer
     }
 
-    fun matches(criteria: Criteria) : Boolean {
+    fun matches(criteria: Criteria) : Boolean { // 기준과 맞으면 true 아니면 false
         score = 0
 
         var kill = false
         var anyMatches = false
-        for (criterion: Criterion in criteria) {
-            var answer = answers[criterion.answer.questionText]
-            var match = criterion.weight == Weight.DontCare || answer!!.match(criterion.answer)
+        for (criterion: Criterion in criteria) {    // 해당 기준이 프로파일에 있는 답변과 맞는지 확인
+            val answer = answers[criterion.answer.questionText]
+            val match = criterion.weight == Weight.DontCare || answer!!.match(criterion.answer)
             if (!match && criterion.weight == Weight.MustMatch) {
                 kill = true
             }
