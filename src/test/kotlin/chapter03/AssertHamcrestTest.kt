@@ -23,6 +23,6 @@ class AssertHamcrestTest {
     @Test
     fun testWithWorthlessAssertionComment() {
         account.deposit(50);
-        assertThat("account balance is 100", account.getBalance(), equalTo(50));
+        assertThat("account balance is 100", account.getBalance(), equalTo(100));
     }
 }
