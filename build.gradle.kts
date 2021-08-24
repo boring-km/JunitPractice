@@ -14,6 +14,8 @@ repositories {
 
 dependencies {
     implementation("junit:junit:4.13.1")
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
+    testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation(kotlin("test"))
 }
 
