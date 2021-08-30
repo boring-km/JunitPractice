@@ -12,4 +12,13 @@ class Account {
         return balance
     }
 
+    fun withdraw(amount: Int) {
+        if (balance < amount) {
+            throw InsufficientFundsException()
+        } else {
+            balance -= amount
+        }
+    }
+
+
 }
