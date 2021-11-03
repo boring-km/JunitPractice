@@ -15,11 +15,10 @@ class ScoreCollectionTest {
         collection = ScoreCollection()
     }
 
-    @Throws(IllegalArgumentException::class)
     @Test
     fun throwsExceptionWhenAddingNull() {
-        // java의 경우라면 null 체크를 안하니까 일부러 Kotlin을 안 쓰고 문제가 될만한 상황을 만들어본다.
-        collection.add(null)
+        // Kotlin은 null을 넣을 수 없음
+        collection.add{ 0 }
     }
 
     @Test
@@ -31,11 +30,6 @@ class ScoreCollectionTest {
     fun dealsWithIntegerOverflow() {
         collection.add { Int.MAX_VALUE }
         collection.add { 1 }
-
-        /*
-        Expected: <1073741824>
-        but: was <-1073741824>
-         */
 
         assertThat(collection.arithmeticMean(), equalTo(1073741824))
     }
