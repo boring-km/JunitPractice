@@ -12,8 +12,8 @@ public class ScoreCollection {
    
    public int arithmeticMean() {
       if (scores.size() == 0) return 0; // ArithmeticException 발생 가능성
-      int total = scores.stream().mapToInt(Scoreable::getScore).sum();
-      return total / scores.size();
+      long total = scores.stream().mapToLong(Scoreable::getScore).sum();
+      return (int) (total / scores.size());
    }
 }
 
