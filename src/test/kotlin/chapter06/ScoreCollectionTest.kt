@@ -26,4 +26,17 @@ class ScoreCollectionTest {
     fun answersZeroWhenNoElementsAdded() {
         assertThat(collection.arithmeticMean(), equalTo(0))
     }
+
+    @Test
+    fun dealsWithIntegerOverflow() {
+        collection.add { Int.MAX_VALUE }
+        collection.add { 1 }
+
+        /*
+        Expected: <1073741824>
+        but: was <-1073741824>
+         */
+
+        assertThat(collection.arithmeticMean(), equalTo(1073741824))
+    }
 }
