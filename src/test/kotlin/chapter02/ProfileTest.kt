@@ -12,7 +12,7 @@ class ProfileTest {
 
     @Before
     fun create() {
-        profile = Profile("Bull Hockey, Inc.")
+        profile = Profile()
         question = BooleanQuestion(1, "Got Bonuses?")
         criteria = Criteria()
     }

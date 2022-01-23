@@ -3,8 +3,7 @@ package chapter02
 import chapter01.Scoreable
 
 // 표준, 기준
-class Criterion(val answer: Answer, weight: Weight) : Scoreable {
-    internal val weight: Weight
+class Criterion(val answer: Answer, val weight: Weight) : Scoreable {
     private var score = 0
 
     fun setScore(score: Int) {
@@ -15,7 +14,6 @@ class Criterion(val answer: Answer, weight: Weight) : Scoreable {
         return score
     }
 
-    init {
-        this.weight = weight
-    }
+    fun matches(answer: Answer?) =
+        weight == Weight.DontCare || answer!!.match(answer)
 }
