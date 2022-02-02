@@ -1,4 +1,4 @@
-package chapter09
+package chapter06
 
 class Answer {
     private var i: Int
