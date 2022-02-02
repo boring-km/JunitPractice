@@ -10,7 +10,7 @@ class MatchSetTest {
     private lateinit var answerReimbursesTuition: Answer    // 수업을 상환한다고 대답
     private lateinit var answerDoesNotReimburseTuition: Answer  // 수업 상환 안한다고 대답
     private lateinit var criteria: Criteria
-    private lateinit var answers: HashMap<String, Answer>
+    private lateinit var answers: AnswerCollection
 
 
     @Before
@@ -26,7 +26,7 @@ class MatchSetTest {
     }
 
     private fun add(answer: Answer) {
-        answers[answer.questionText] = answer
+        answers.add(answer)
     }
 
     private fun createMatchSet(): MatchSet {

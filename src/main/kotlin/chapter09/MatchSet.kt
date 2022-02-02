@@ -1,22 +1,19 @@
 package chapter09
 
-class MatchSet(private var answers: HashMap<String, Answer>, private var criteria: Criteria) {
-
-    var score = 0
-        private set
+class MatchSet(private var answers: AnswerCollection, private var criteria: Criteria) {
 
     init {
         calculateScore(criteria)
     }
 
-    private fun calculateScore(criteria: Criteria) {
+    private fun calculateScore(criteria: Criteria): Int {
+        var score = 0
         for (criterion: Criterion in criteria) {
-            if (criterion.matches(answerMatching(criterion)))
+            if (criterion.matches(answers.answerMatching(criterion)))
                 score += criterion.weight.value
         }
+        return score
     }
-
-    private fun answerMatching(criterion: Criterion) = answers[criterion.answer.questionText]
 
     fun matches(): Boolean {
         if (doesNotMeetAnyMustMatchCriterion(criteria)) // 특정 조건에 걸리면 false
@@ -27,7 +24,7 @@ class MatchSet(private var answers: HashMap<String, Answer>, private var criteri
     private fun doesNotMeetAnyMustMatchCriterion(criteria: Criteria): Boolean {
 
         for (criterion: Criterion in criteria) {
-            val match = criterion.matches(answerMatching(criterion))
+            val match = criterion.matches(answers.answerMatching(criterion))
             if (!match && criterion.weight == Weight.MustMatch) {
                 return true
             }
@@ -38,7 +35,7 @@ class MatchSet(private var answers: HashMap<String, Answer>, private var criteri
     private fun anyMatches(criteria: Criteria) : Boolean {
         var anyMatches = false
         for (criterion: Criterion in criteria) {
-            anyMatches = anyMatches or criterion.matches(answerMatching(criterion))
+            anyMatches = anyMatches or criterion.matches(answers.answerMatching(criterion))
         }
         return anyMatches
     }
