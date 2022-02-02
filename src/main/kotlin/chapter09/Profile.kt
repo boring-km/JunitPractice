@@ -5,8 +5,6 @@ import java.util.stream.Collectors
 
 class Profile(val name: String) {
     private val answers = HashMap<String, Answer>()
-    var score: Int = 0
-        private set
 
 
     // 회사에게 받은 질문에 대한 답변을 저장
@@ -14,10 +12,8 @@ class Profile(val name: String) {
         answers[answer.questionText] = answer
     }
 
-    fun matches(criteria: Criteria) : Boolean {
-        val matchSet = MatchSet(answers, criteria)
-        score = matchSet.score
-        return matchSet.matches()
+    fun getMatchSet(criteria: Criteria) : MatchSet {
+        return MatchSet(answers, criteria)
     }
 
     override fun toString(): String {
