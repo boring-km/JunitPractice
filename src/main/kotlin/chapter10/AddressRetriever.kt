@@ -1,16 +1,17 @@
 package chapter10
 
+import chapter10.util.Http
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.IOException
 import java.text.ParseException
 
-class AddressRetriever {
+class AddressRetriever(val http: Http) {
 
     @Throws(IOException::class, ParseException::class)
     fun retrieve(latitude: Double, longitude: Double): Address {
-        val params = String.format("lat=%.6flon=%.6f", latitude, longitude)
-        val response = HttpImpl().get(
+        val params = String.format("lat=%.6f&lon=%.6f", latitude, longitude)
+        val response = http.get(
             "http://open.mapquestapi.com/nominatim/v1/reserve?format=json&"
                     + params
         )
