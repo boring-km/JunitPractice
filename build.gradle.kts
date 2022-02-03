@@ -14,6 +14,9 @@ repositories {
 
 dependencies {
     implementation("junit:junit:4.13.1")
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
     testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation(kotlin("test"))
