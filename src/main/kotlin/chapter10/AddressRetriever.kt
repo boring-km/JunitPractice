@@ -6,7 +6,9 @@ import org.json.simple.parser.JSONParser
 import java.io.IOException
 import java.text.ParseException
 
-class AddressRetriever(val http: Http) {
+class AddressRetriever {
+
+    private val http: Http = HttpImpl()
 
     @Throws(IOException::class, ParseException::class)
     fun retrieve(latitude: Double, longitude: Double): Address {

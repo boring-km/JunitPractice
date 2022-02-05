@@ -17,6 +17,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
     implementation("org.apache.httpcomponents:httpclient:4.5.13")
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    testImplementation("org.mockito:mockito-core:4.3.1")
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
     testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation(kotlin("test"))
