@@ -1,13 +1,13 @@
 package chapter11.util
 
-import org.hamcrest.CoreMatchers
-import org.junit.Assert
+import chapter11.util.ContainsMatches.Companion.containsMatches
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.*
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.net.URL
 import java.util.logging.Level
-import kotlin.jvm.Throws
 
 
 class SearchTest {
@@ -27,13 +27,13 @@ class SearchTest {
         Search.LOGGER.level = Level.OFF
         search.setSurroundingCharacterCount(10)
         search.execute()
-        Assert.assertFalse(search.errored())
-        val matches: List<Match> = search.getMatches()
-        Assert.assertTrue(matches.size >= 1)
-        val match: Match = matches[0]
-        Assert.assertThat(match.searchString, CoreMatchers.equalTo("practical joke"))
-        Assert.assertThat(match.surroundingContext,
-            CoreMatchers.equalTo("or a vast practical joke, though t"))
+        assertFalse(search.errored())
+        assertThat(search.getMatches(),
+            containsMatches<Match>(arrayOf(
+                Match("1",
+                    "practical joke",
+            "or a vast practical joke, though t"
+                ))))
         stream.close()
 
         // negative
@@ -41,7 +41,7 @@ class SearchTest {
         val inputStream = connection.getInputStream()
         search = Search(inputStream, "smelt", "http://bit.ly/15sYPA7")
         search.execute()
-        Assert.assertThat(search.getMatches().size, CoreMatchers.equalTo(0))
+        assertTrue(search.getMatches().isEmpty())
         stream.close()
     }
 }
