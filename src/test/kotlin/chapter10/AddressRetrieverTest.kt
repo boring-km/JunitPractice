@@ -1,4 +1,5 @@
-import chapter10.AddressRetriever
+package chapter10
+
 import chapter10.util.Http
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
