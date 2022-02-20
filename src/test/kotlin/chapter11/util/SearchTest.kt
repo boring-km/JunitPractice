@@ -11,6 +11,11 @@ import java.util.logging.Level
 
 
 class SearchTest {
+
+    companion object {
+        private const val A_TITLE = "1"
+    }
+
     @Test
     @Throws(IOException::class)
     fun testSearch() {
@@ -23,14 +28,14 @@ class SearchTest {
         val bytes = pageContent.toByteArray()
         val stream = ByteArrayInputStream(bytes)
         // search
-        var search = Search(stream, "practical joke", "1")
+        var search = Search(stream, "practical joke", A_TITLE)
         Search.LOGGER.level = Level.OFF
         search.setSurroundingCharacterCount(10)
         search.execute()
         assertFalse(search.errored())
         assertThat(search.getMatches(),
             containsMatches<Match>(arrayOf(
-                Match("1",
+                Match(A_TITLE,
                     "practical joke",
             "or a vast practical joke, though t"
                 ))))
@@ -39,7 +44,7 @@ class SearchTest {
         // negative
         val connection = URL("http://bit.ly/15sYPA7").openConnection()
         val inputStream = connection.getInputStream()
-        search = Search(inputStream, "smelt", "http://bit.ly/15sYPA7")
+        search = Search(inputStream, "smelt", A_TITLE)
         search.execute()
         assertTrue(search.getMatches().isEmpty())
         stream.close()
