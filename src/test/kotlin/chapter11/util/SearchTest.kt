@@ -44,7 +44,9 @@ class SearchTest {
                 + "his own.")
         val search = Search(stream, "practical joke", A_TITLE)
         search.setSurroundingCharacterCount(10)
+
         search.execute()
+
         assertThat(search.getMatches(), containsMatches<Match>(arrayOf(
                 Match(A_TITLE,
                     "practical joke",
@@ -63,7 +65,9 @@ class SearchTest {
         val connection = URL("http://bit.ly/15sYPA7").openConnection()
         stream = connection.getInputStream()
         val search = Search(stream, "smelt", A_TITLE)
+
         search.execute()
+
         assertTrue(search.getMatches().isEmpty())
     }
 }
