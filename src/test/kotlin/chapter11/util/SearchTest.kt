@@ -7,6 +7,7 @@ import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.io.InputStream
+import java.net.MalformedURLException
 import java.net.URL
 import java.util.logging.Level
 
@@ -26,8 +27,7 @@ class SearchTest {
                 + "though the wit thereof he but dimly discerns, and more "
                 + "than suspects that the joke is at nobody's expense but "
                 + "his own.")
-        // search
-        var search = Search(stream, "practical joke", A_TITLE)
+        val search = Search(stream, "practical joke", A_TITLE)
         Search.LOGGER.level = Level.OFF
         search.setSurroundingCharacterCount(10)
         search.execute()
@@ -40,16 +40,20 @@ class SearchTest {
                 ))))
         stream.close()
 
-        // negative
-        val connection = URL("http://bit.ly/15sYPA7").openConnection()
-        val inputStream: InputStream = connection.getInputStream()
-        search = Search(inputStream, "smelt", A_TITLE)
-        search.execute()
-        assertTrue(search.getMatches().isEmpty())
-        stream.close()
     }
 
     private fun streamOn(pageContent: String): InputStream {
         return ByteArrayInputStream(pageContent.toByteArray())
+    }
+
+    @Test
+    @Throws(MalformedURLException::class, IOException::class)
+    fun noMatchesReturnedWhenSearchStringNotInContent() {
+        val connection = URL("http://bit.ly/15sYPA7").openConnection()
+        val inputStream: InputStream = connection.getInputStream()
+        val search = Search(inputStream, "smelt", A_TITLE)
+        search.execute()
+        assertTrue(search.getMatches().isEmpty())
+        inputStream.close()
     }
 }
