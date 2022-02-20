@@ -64,4 +64,32 @@ class SearchTest {
 
         assertTrue(search.getMatches().isEmpty())
     }
+
+    @Test
+    fun returnsErroredWhenUnableToReadStream() {
+        stream = createStreamThrowingErrorWhenRead()
+        val search = Search(stream, "", "")
+
+        search.execute()
+
+        assertTrue(search.errored())
+    }
+
+    private fun createStreamThrowingErrorWhenRead(): InputStream {
+        return object : InputStream() {
+            override fun read(): Int {
+                throw IOException()
+            }
+        }
+    }
+
+    @Test
+    fun erroredReturnsFalseWhenReadSucceeds() {
+        stream = streamOn("")
+        val search = Search(stream, "", "")
+
+        search.execute()
+
+        assertFalse(search.errored())
+    }
 }
