@@ -34,23 +34,19 @@ class SearchTest {
     }
 
     @Test
-    @Throws(IOException::class)
     fun testSearch() {
-        stream = streamOn("There are certain queer times and occasions "
-                + "in this strange mixed affair we call life when a man "
-                + "takes this whole universe for a vast practical joke, "
-                + "though the wit thereof he but dimly discerns, and more "
-                + "than suspects that the joke is at nobody's expense but "
-                + "his own.")
-        val search = Search(stream, "practical joke", A_TITLE)
+        stream = streamOn("rest of text here" +
+                "1234567890search term1234567890" +
+                "more rest of text")
+        val search = Search(stream, "search term", A_TITLE)
         search.setSurroundingCharacterCount(10)
 
         search.execute()
 
         assertThat(search.getMatches(), containsMatches<Match>(arrayOf(
                 Match(A_TITLE,
-                    "practical joke",
-                    "or a vast practical joke, though t"
+                    "search term",
+                    "1234567890search term1234567890"
                 ))))
 
     }
@@ -60,11 +56,9 @@ class SearchTest {
     }
 
     @Test
-    @Throws(MalformedURLException::class, IOException::class)
     fun noMatchesReturnedWhenSearchStringNotInContent() {
-        val connection = URL("http://bit.ly/15sYPA7").openConnection()
-        stream = connection.getInputStream()
-        val search = Search(stream, "smelt", A_TITLE)
+        stream = streamOn("any text")
+        val search = Search(stream, "text that doesn't match", A_TITLE)
 
         search.execute()
 
