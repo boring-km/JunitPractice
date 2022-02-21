@@ -16,8 +16,16 @@ class Profile {
         answers[answer.questionText] = answer
     }
 
-    fun matches(criterion: Criteria): Boolean {
-        return false
+    fun matches(criteria: Criteria): Boolean {
+        var matches = false
+        for (criterion: Criterion in criteria) {
+            if (matches(criterion)) {
+                matches = true
+            } else if (criterion.weight == Weight.MustMatch) {
+                return false
+            }
+        }
+        return matches
     }
 
 }

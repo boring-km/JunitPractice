@@ -1,5 +1,11 @@
 package chapter12
 
-class Criterion(var answer: Answer, dontCare: Any) {
+class Criterion(
+    val answer: Answer,
+    val weight: Weight
+){
 
+    fun matches(answer: Answer): Boolean {
+        return weight === Weight.DontCare || answer.match(this.answer)
+    }
 }

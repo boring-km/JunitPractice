@@ -15,6 +15,13 @@ class ProfileTest {
     private lateinit var answerDoesNotReimburseTuition: Answer
     private lateinit var answerReimbursesTuition: Answer
 
+    private lateinit var criteria: Criteria
+
+    @Before
+    fun createCriteria() {
+        criteria = Criteria()
+    }
+
     @Before
     fun createProfile() {
         profile = Profile()
@@ -77,9 +84,16 @@ class ProfileTest {
         val criteria = Criteria()
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
         criteria.add(Criterion(answerReimbursesTuition, Weight.Important))
+        assertTrue(profile.matches(criteria))   // AAA 규칙을 안지켜도 잘 읽힌다.
+    }
 
-        val result = profile.matches(criteria)
+    @Test
+    fun doesNotMatchWhenAnyMustMeetCriteriaNotMet() {
+        profile.add(answerThereIsRelocation)
+        profile.add(answerDoesNotReimburseTuition)
+        criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
+        criteria.add(Criterion(answerReimbursesTuition, Weight.MustMatch))
 
-        assertTrue(result)
+        assertFalse(profile.matches(criteria))
     }
 }

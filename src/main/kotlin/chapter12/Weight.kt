@@ -1,12 +1,6 @@
 package chapter12
 
-class Weight {
-    object DontCare {
-
-    }
-
-    object Important {
-
-    }
+enum class Weight(val value: Int) {
+    MustMatch(Int.MAX_VALUE), VeryImportant(5000), Important(1000), WouldPrefer(100), DontCare(0);
 
 }
