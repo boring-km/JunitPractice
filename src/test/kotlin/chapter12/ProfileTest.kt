@@ -11,6 +11,9 @@ class ProfileTest {
     private lateinit var questionIsThereRelocation: BooleanQuestion
     private lateinit var answerThereIsRelocation: Answer
     private lateinit var answerThereIsNotRelocation: Answer
+    private lateinit var questionReimbursesTuition: BooleanQuestion
+    private lateinit var answerDoesNotReimburseTuition: Answer
+    private lateinit var answerReimbursesTuition: Answer
 
     @Before
     fun createProfile() {
@@ -22,6 +25,9 @@ class ProfileTest {
         questionIsThereRelocation = BooleanQuestion(1, "Relocation package?")
         answerThereIsRelocation = Answer(questionIsThereRelocation, Bool.TRUE)
         answerThereIsNotRelocation = Answer(questionIsThereRelocation, Bool.FALSE)
+        questionReimbursesTuition = BooleanQuestion(1, "Reimburses tuition?")
+        answerDoesNotReimburseTuition = Answer(questionReimbursesTuition, Bool.FALSE)
+        answerReimbursesTuition = Answer(questionReimbursesTuition, Bool.TRUE)
     }
 
     @Test
@@ -51,5 +57,29 @@ class ProfileTest {
         val result = profile.matches(criterion)
 
         assertFalse(result)
+    }
+
+    @Test
+    fun doesNotMatchWhenNoneOfMultipleCriteriaMatch() {
+        profile.add(answerDoesNotReimburseTuition)
+        val criteria = Criteria()
+        criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
+        criteria.add(Criterion(answerReimbursesTuition, Weight.Important))
+
+        val result = profile.matches(criteria)
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun matchesWhenAnyOfMultipleCriteriaMatch() {
+        profile.add(answerThereIsRelocation)
+        val criteria = Criteria()
+        criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
+        criteria.add(Criterion(answerReimbursesTuition, Weight.Important))
+
+        val result = profile.matches(criteria)
+
+        assertTrue(result)
     }
 }

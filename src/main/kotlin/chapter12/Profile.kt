@@ -16,4 +16,8 @@ class Profile {
         answers[answer.questionText] = answer
     }
 
+    fun matches(criterion: Criteria): Boolean {
+        return false
+    }
+
 }
