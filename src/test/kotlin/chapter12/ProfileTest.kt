@@ -7,17 +7,17 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class ProfileTest {
+open class ProfileTest {
 
-    private lateinit var profile: Profile
-    private lateinit var questionIsThereRelocation: BooleanQuestion
-    private lateinit var answerThereIsRelocation: Answer
-    private lateinit var answerThereIsNotRelocation: Answer
-    private lateinit var questionReimbursesTuition: BooleanQuestion
-    private lateinit var answerDoesNotReimburseTuition: Answer
-    private lateinit var answerReimbursesTuition: Answer
+    lateinit var profile: Profile
+    lateinit var questionIsThereRelocation: BooleanQuestion
+    lateinit var answerThereIsRelocation: Answer
+    lateinit var answerThereIsNotRelocation: Answer
+    lateinit var questionReimbursesTuition: BooleanQuestion
+    lateinit var answerDoesNotReimburseTuition: Answer
+    lateinit var answerReimbursesTuition: Answer
 
-    private lateinit var criteria: Criteria
+    lateinit var criteria: Criteria
 
     @Before
     fun createCriteria() {
@@ -38,31 +38,52 @@ class ProfileTest {
         answerDoesNotReimburseTuition = Answer(questionReimbursesTuition, Bool.FALSE)
         answerReimbursesTuition = Answer(questionReimbursesTuition, Bool.TRUE)
     }
+}
+
+class Profile_MatchesCriterionTest: ProfileTest() {
 
     @Test
-    fun matchesWhenProfileContainsMatchingAnswer() {
+    fun trueWhenMatchesSoleAnswer() {
         profile.add(answerThereIsRelocation)
         val criterion = Criterion(answerThereIsRelocation, Weight.Important)
-        criteria.add(criterion)
 
-        val result = profile.match(criteria).isMatch
+        val result = profile.match(criterion).isMatch
 
         assertTrue(result)
     }
 
     @Test
-    fun doesNotMatchWhenNoMatchingAnswer() {
+    fun falseWhenNoMatchingAnswerContained() {
         profile.add(answerThereIsNotRelocation)
         val criterion = Criterion(answerThereIsRelocation, Weight.Important)
-        criteria.add(criterion)
 
-        val result = profile.match(criteria).isMatch
+        val result = profile.match(criterion).isMatch
 
         assertFalse(result)
     }
 
     @Test
-    fun doesNotMatchWhenNoneOfMultipleCriteriaMatch() {
+    fun matchesWhenContainsMultipleAnswers() {
+        profile.add(answerThereIsRelocation)
+        profile.add(answerDoesNotReimburseTuition)
+        val criterion = Criterion(answerThereIsRelocation, Weight.Important)
+
+        assertTrue(profile.match(criterion).isMatch)
+    }
+
+    @Test
+    fun matchesWhenCriterionIsDontCare() {
+        profile.add(answerDoesNotReimburseTuition)
+        val criterion = Criterion(answerReimbursesTuition, Weight.DontCare)
+
+        assertTrue(profile.match(criterion).isMatch)
+    }
+}
+
+class Profile_MatchesCriteriaTest: ProfileTest() {
+
+    @Test
+    fun falseWhenNoneOfMultipleCriteriaMatch() {
         profile.add(answerDoesNotReimburseTuition)
         val criteria = Criteria()
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
@@ -74,7 +95,7 @@ class ProfileTest {
     }
 
     @Test
-    fun matchesWhenAnyOfMultipleCriteriaMatch() {
+    fun trueWhenAnyOfMultipleCriteriaMatch() {
         profile.add(answerThereIsRelocation)
         val criteria = Criteria()
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
@@ -83,7 +104,7 @@ class ProfileTest {
     }
 
     @Test
-    fun doesNotMatchWhenAnyMustMeetCriteriaNotMet() {
+    fun falseWhenAnyMustMeetCriteriaNotMet() {
         profile.add(answerThereIsRelocation)
         profile.add(answerDoesNotReimburseTuition)
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
@@ -91,18 +112,11 @@ class ProfileTest {
 
         assertFalse(profile.match(criteria).isMatch)
     }
+}
 
+class Profile_ScoreTest: ProfileTest() {
     @Test
-    fun matchesWhenCriterionIsDontCare() {
-        profile.add(answerDoesNotReimburseTuition)
-        val criterion = Criterion(answerReimbursesTuition, Weight.DontCare)
-        criteria.add(criterion)
-
-        assertTrue(profile.match(criteria).isMatch)
-    }
-
-    @Test
-    fun scoreIsZeroWhenThereAreNoMatches() {
+    fun zeroWhenThereAreNoMatches() {
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
 
         val match: ProfileMatch = profile.match(criteria)

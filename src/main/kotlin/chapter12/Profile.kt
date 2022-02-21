@@ -10,4 +10,10 @@ class Profile {
     fun match(criteria: Criteria): ProfileMatch {
         return ProfileMatch(answers, criteria)
     }
+
+    fun match(criterion: Criterion): ProfileMatch {
+        val criteria = Criteria()
+        criteria.add(criterion)
+        return ProfileMatch(answers, criteria)
+    }
 }
