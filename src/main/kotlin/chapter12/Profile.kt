@@ -8,8 +8,8 @@ class Profile {
     }
 
     fun matches(criterion: Criterion): Boolean {
-        val answer = getMatchingProfileAnswer(criterion)
-        return answer != null && answer.match(criterion.answer)
+        return criterion.weight == Weight.DontCare ||
+                criterion.answer.match(getMatchingProfileAnswer(criterion))
     }
 
     fun add(answer: Answer) {
@@ -26,6 +26,10 @@ class Profile {
             }
         }
         return matches
+    }
+
+    fun match(criteria: Criteria): ProfileMatch {
+        TODO("Not yet implemented")
     }
 
 }

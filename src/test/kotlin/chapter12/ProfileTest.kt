@@ -1,5 +1,7 @@
 package chapter12
 
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -35,15 +37,6 @@ class ProfileTest {
         questionReimbursesTuition = BooleanQuestion(1, "Reimburses tuition?")
         answerDoesNotReimburseTuition = Answer(questionReimbursesTuition, Bool.FALSE)
         answerReimbursesTuition = Answer(questionReimbursesTuition, Bool.TRUE)
-    }
-
-    @Test
-    fun matchesNothingWhenProfileEmpty() {
-        val criterion = Criterion(answerThereIsRelocation, Weight.DontCare)
-
-        val result = profile.matches(criterion)
-
-        assertFalse(result)
     }
 
     @Test
@@ -95,5 +88,22 @@ class ProfileTest {
         criteria.add(Criterion(answerReimbursesTuition, Weight.MustMatch))
 
         assertFalse(profile.matches(criteria))
+    }
+
+    @Test
+    fun matchesWhenCriterionIsDontCare() {
+        profile.add(answerDoesNotReimburseTuition)
+        val criterion = Criterion(answerReimbursesTuition, Weight.DontCare)
+
+        assertTrue(profile.matches(criterion))
+    }
+
+    @Test
+    fun scoreIsZeroWhenThereAreNoMatches() {
+        criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
+
+        val match: ProfileMatch = profile.match(criteria)
+
+        assertThat(match.score, equalTo(0))
     }
 }
