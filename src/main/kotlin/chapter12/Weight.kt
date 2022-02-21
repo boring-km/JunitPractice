@@ -5,4 +5,8 @@ class Weight {
 
     }
 
+    object Important {
+
+    }
+
 }
