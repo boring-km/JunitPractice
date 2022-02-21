@@ -1,15 +1,19 @@
 package chapter12
 
 class Profile {
-    private var answer: Answer? = null
+    private var answers: MutableMap<String, Answer> = HashMap()
 
-    fun matches(criterion: Criterion): Boolean {
-        return answer != null && answer!!.match(criterion.answer)
+    private fun getMatchingProfileAnswer(criterion: Criterion): Answer? {
+        return answers[criterion.answer.questionText]
     }
 
-    fun add(answer: Answer?) {
-        this.answer = answer
+    fun matches(criterion: Criterion): Boolean {
+        val answer = getMatchingProfileAnswer(criterion)
+        return answer != null && answer.match(criterion.answer)
+    }
 
+    fun add(answer: Answer) {
+        answers[answer.questionText] = answer
     }
 
 }

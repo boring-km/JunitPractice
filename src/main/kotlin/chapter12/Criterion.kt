@@ -1,6 +1,5 @@
 package chapter12
 
-class Criterion(answer: Any, dontCare: Any) {
+class Criterion(var answer: Answer, dontCare: Any) {
 
-    var answer: Answer? = null
 }
