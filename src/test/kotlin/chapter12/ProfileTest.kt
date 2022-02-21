@@ -10,6 +10,7 @@ class ProfileTest {
     private lateinit var profile: Profile
     private lateinit var questionIsThereRelocation: BooleanQuestion
     private lateinit var answerThereIsRelocation: Answer
+    private lateinit var answerThereIsNotRelocation: Answer
 
     @Before
     fun createProfile() {
@@ -20,6 +21,7 @@ class ProfileTest {
     fun createQuestionAndAnswer() { // 이렇게 2가지를 같이 생성하는 의미로 사용해도 되려나...?
         questionIsThereRelocation = BooleanQuestion(1, "Relocation package?")
         answerThereIsRelocation = Answer(questionIsThereRelocation, Bool.TRUE)
+        answerThereIsNotRelocation = Answer(questionIsThereRelocation, Bool.FALSE)
     }
 
     @Test
@@ -39,5 +41,15 @@ class ProfileTest {
         val result = profile.matches(criterion)
 
         assertTrue(result)
+    }
+
+    @Test
+    fun doesNotMatchWhenNoMatchingAnswer() {
+        profile.add(answerThereIsNotRelocation)
+        val criterion = Criterion(answerThereIsRelocation, Weight.Important)
+
+        val result = profile.matches(criterion)
+
+        assertFalse(result)
     }
 }

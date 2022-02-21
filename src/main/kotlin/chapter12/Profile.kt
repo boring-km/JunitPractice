@@ -4,7 +4,7 @@ class Profile {
     private var answer: Answer? = null
 
     fun matches(criterion: Criterion): Boolean {
-        return answer != null
+        return answer != null && answer!!.match(criterion.answer)
     }
 
     fun add(answer: Answer?) {

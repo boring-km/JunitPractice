@@ -5,4 +5,8 @@ class Bool {
 
     }
 
+    object FALSE {
+
+    }
+
 }
