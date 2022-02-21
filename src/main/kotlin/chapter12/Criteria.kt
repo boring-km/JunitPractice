@@ -12,4 +12,8 @@ class Criteria : MutableIterable<Criterion> {
         criteria.add(criterion)
     }
 
+    fun size(): Int {
+        return criteria.size
+    }
+
 }

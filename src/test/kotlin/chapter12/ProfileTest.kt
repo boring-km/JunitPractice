@@ -43,8 +43,9 @@ class ProfileTest {
     fun matchesWhenProfileContainsMatchingAnswer() {
         profile.add(answerThereIsRelocation)
         val criterion = Criterion(answerThereIsRelocation, Weight.Important)
+        criteria.add(criterion)
 
-        val result = profile.matches(criterion)
+        val result = profile.match(criteria).isMatch
 
         assertTrue(result)
     }
@@ -53,8 +54,9 @@ class ProfileTest {
     fun doesNotMatchWhenNoMatchingAnswer() {
         profile.add(answerThereIsNotRelocation)
         val criterion = Criterion(answerThereIsRelocation, Weight.Important)
+        criteria.add(criterion)
 
-        val result = profile.matches(criterion)
+        val result = profile.match(criteria).isMatch
 
         assertFalse(result)
     }
@@ -66,7 +68,7 @@ class ProfileTest {
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
         criteria.add(Criterion(answerReimbursesTuition, Weight.Important))
 
-        val result = profile.matches(criteria)
+        val result = profile.match(criteria).isMatch
 
         assertFalse(result)
     }
@@ -77,7 +79,7 @@ class ProfileTest {
         val criteria = Criteria()
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
         criteria.add(Criterion(answerReimbursesTuition, Weight.Important))
-        assertTrue(profile.matches(criteria))   // AAA 규칙을 안지켜도 잘 읽힌다.
+        assertTrue(profile.match(criteria).isMatch)   // AAA 규칙을 안지켜도 잘 읽힌다.
     }
 
     @Test
@@ -87,15 +89,16 @@ class ProfileTest {
         criteria.add(Criterion(answerThereIsRelocation, Weight.Important))
         criteria.add(Criterion(answerReimbursesTuition, Weight.MustMatch))
 
-        assertFalse(profile.matches(criteria))
+        assertFalse(profile.match(criteria).isMatch)
     }
 
     @Test
     fun matchesWhenCriterionIsDontCare() {
         profile.add(answerDoesNotReimburseTuition)
         val criterion = Criterion(answerReimbursesTuition, Weight.DontCare)
+        criteria.add(criterion)
 
-        assertTrue(profile.matches(criterion))
+        assertTrue(profile.match(criteria).isMatch)
     }
 
     @Test
@@ -105,5 +108,14 @@ class ProfileTest {
         val match: ProfileMatch = profile.match(criteria)
 
         assertThat(match.score, equalTo(0))
+    }
+
+    @Test
+    fun 모두_일치하면_Score는_100이다() {
+        criteria.add(Criterion(answerThereIsRelocation, Weight.DontCare))
+
+        val match = profile.match(criteria)
+
+        assertThat(match.score, equalTo(100))
     }
 }
