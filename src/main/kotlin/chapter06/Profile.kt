@@ -41,7 +41,6 @@ class Profile(val name: String) {
         return anyMatches
     }
 
-    // FIXME 중복 코드
     private fun answerMatching(criterion: Criterion) = answers[criterion.answer.questionText]
 
     override fun toString(): String {
