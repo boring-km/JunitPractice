@@ -14,20 +14,21 @@ class ProfileMatcher {
       criteria: Criteria?, listener: MatchListener
    ) {
       val executor = Executors.newFixedThreadPool(DEFAULT_POOL_SIZE)
-      val matchSets = profiles.values.stream()
-         .map { profile: Profile ->
-            profile.getMatchSet(
-               criteria
-            )
-         }
-         .collect(Collectors.toList())
-      for (set in matchSets) {
+      for (set in collectMatchSets(criteria)) {
          val runnable =
             Runnable { if (set.matches()) listener.foundMatch(profiles[set.profileId], set) }
          executor.execute(runnable)
       }
       executor.shutdown()
    }
+
+   fun collectMatchSets(criteria: Criteria?) = profiles.values.stream()
+      .map { profile: Profile ->
+         profile.getMatchSet(
+            criteria
+         )
+      }
+      .collect(Collectors.toList())
 
    companion object {
       private const val DEFAULT_POOL_SIZE = 4
